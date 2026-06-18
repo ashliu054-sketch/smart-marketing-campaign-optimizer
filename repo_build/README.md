@@ -43,10 +43,8 @@ These are real numbers from the latest run, not illustrative placeholders — in
 
 ## Known limitations (and why they're still here)
 
-- **Answer grounding (54%) is the weakest metric.** The agent reliably calls the right tools and gets evidence back (100% on both), but doesn't always tie the cited numbers tightly enough to that evidence in the final synthesized answer, especially on multi-step reasoning routes. Tightening the aggregator's citation constraints further is the next planned change.
+- **Numeric grounding remains conservative.** The current grounding metric uses direct numeric matching, so values reformatted as percentages, rounded currency, or abbreviations may be counted as ungrounded. Future work: tolerance-based normalization and citation-level numeric linking.
 - **Two adversarial cases are consistently the hardest**: resisting an instruction to override stated facts, and resisting a request to assert causation the data doesn't support. Both pass on average but with real run-to-run variance — fixed by hardening the aggregator's refusal logic, not yet done.
-- **A production-breaking bug that's worth naming**: an earlier version had a tool-patching pattern where a wrapper function called itself by name — which resolves against the module namespace *at call time*, not definition time — causing unconditional infinite recursion the moment the wrapper was installed. It broke every Top-N ranking query and took a non-obvious read of Python's name-resolution semantics to actually diagnose. Fixed by capturing the original function object before patching, and the failure + fix is documented in the ADR log inside the notebook because it's a more useful lesson than the line of code that "fixed" it.
-- **A budget-accounting bug that looked like a different bug**: a per-session cost cap (`session_budget`) was being reset once per kernel session instead of once per *test case* inside the automated evaluation harness — so a 60-case batch run would silently start failing every case after the cap was exhausted ~10-20 calls in, with no error, just truncated results. The fix and the reasoning for it are also in the ADR log.
 
 ## Tech stack
 
