@@ -46,6 +46,11 @@ These are real numbers from the latest run, not illustrative placeholders — in
 - **Numeric grounding remains conservative.** The current grounding metric uses direct numeric matching, so values reformatted as percentages, rounded currency, or abbreviations may be counted as ungrounded. Future work: tolerance-based normalization and citation-level numeric linking.
 - **Adversarial and causal-overclaim prompts remain the hardest consistency cases.** The system usually handles them correctly, but repeated runs showed higher variance on prompts asking it to ignore data or prove causality from observational data. Future work: stronger refusal templates and causal-language validators.
 
+## Failure modes fixed during development
+* **Recursive tool-wrapper failure:** an earlier tool patch wrapped `query_campaign_db` but accidentally called itself by name. Because Python resolves that name at call time, the wrapper caused unconditional recursion and broke every Top-N query. The fix was to capture the original function object before patching and delegate to that captured reference. This failure became an ADR because it exposed how fragile post-hoc tool patching can be in agent systems.
+
+* **Evaluation budget contamination:** the 60-case full-battery test initially showed a misleadingly low pass rate because a global `session_budget` was not reset between test cases. After the first set of calls exhausted the budget, later cases were blocked before reaching the agent graph. The fix was to reset memory and budget per test case and report the full-battery evaluation as a coverage test rather than a consistency test.
+
 ## Tech stack
 
 LangGraph (agent orchestration) · Qwen-Max / Qwen-Plus via an OpenAI-compatible endpoint (DashScope) · SQLite (warehouse) · Gradio (supplementary chat UI, not a replacement for the structured demo traces in the notebook) · pandas / numpy (analytics layer)
