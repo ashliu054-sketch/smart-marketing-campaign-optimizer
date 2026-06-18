@@ -44,7 +44,7 @@ These are real numbers from the latest run, not illustrative placeholders — in
 ## Known limitations (and why they're still here)
 
 - **Numeric grounding remains conservative.** The current grounding metric uses direct numeric matching, so values reformatted as percentages, rounded currency, or abbreviations may be counted as ungrounded. Future work: tolerance-based normalization and citation-level numeric linking.
-- **Two adversarial cases are consistently the hardest**: resisting an instruction to override stated facts, and resisting a request to assert causation the data doesn't support. Both pass on average but with real run-to-run variance — fixed by hardening the aggregator's refusal logic, not yet done.
+- **Adversarial and causal-overclaim prompts remain the hardest consistency cases.** The system usually handles them correctly, but repeated runs showed higher variance on prompts asking it to ignore data or prove causality from observational data. Future work: stronger refusal templates and causal-language validators.
 
 ## Tech stack
 
