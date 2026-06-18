@@ -17,7 +17,7 @@ Most "LLM + data" demos stop at: load CSV → ask LLM to write pandas/SQL → pr
 
 ## Architecture
 
-![Architecture diagram](architecture_diagram.png)
+!<img width="226" height="579" alt="architecture_diagram" src="https://github.com/user-attachments/assets/0b516d6a-87fe-45d8-95a3-f13c473719bc" />
 
 LangGraph `StateGraph` with: a deterministic pre-router → JSON-constrained planner (forced 4-step reasoning before tool selection) → tool executor (13 analytics tools over SQLite, with self-correcting retry on empty results) → aggregator (synthesizes the final answer, constrained to cite only tools actually called). Qwen-Max is used for the executor and judge nodes (cheaper Qwen-Plus produced unreliable SQL with spurious `WHERE` clauses causing silent zero-row failures); Qwen-Plus handles routing, planning, and aggregation.
 
