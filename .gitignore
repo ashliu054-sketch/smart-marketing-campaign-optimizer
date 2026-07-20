@@ -1,0 +1,34 @@
+# Secrets — never commit API keys
+.env
+*.key
+secrets*
+*api_key*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Locally generated databases / runtime artifacts
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Evaluation checkpoints (regenerated per run)
+battery_*.jsonl
+battery_*.csv
+consistency_results.csv
+full_battery_results.csv
+release_manifest.json
+
+# OS / misc
+.DS_Store
+Thumbs.db
+*.textClipping
